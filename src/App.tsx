@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+// import { updateDonates } from './common/donatesSlice';
+import { Plugin } from './plugin/Plugin'
+import { PluginError } from './plugin/PluginError';
+import { PluginHome } from './plugin/PluginHome';
+// import { useUpdateDonateFromServer } from './plugin/service/donate';
+
 
 function App() {
+
+  const router = createBrowserRouter([
+    {
+      path: "/plugin",
+      element: <PluginHome />,
+      errorElement: <PluginError />,
+    },
+    {
+      path: "/plugin/:streamerId",
+      element: <Plugin />,
+      errorElement: <PluginError />,
+    }
+  ])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 
