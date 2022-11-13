@@ -13,7 +13,7 @@ export const donatesSlice = createSlice({
       console.log(action.payload);
       
       
-      state.value.donates.push(action.payload)
+      state.value.donates.push(...action.payload)
     },
     increaseLastCheckedDonateId : (state) => {
       state.value.lastCheckedDonateId += 1

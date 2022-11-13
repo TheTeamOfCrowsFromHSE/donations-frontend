@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { updateDonates } from './common/donatesSlice';
+import { useAppDispatch } from './common/hooks';
+import { socket } from './common/socketSlice';
 // import { updateDonates } from './common/donatesSlice';
 import { Plugin } from './plugin/Plugin'
 import { PluginError } from './plugin/PluginError';
@@ -21,6 +24,19 @@ function App() {
       errorElement: <PluginError />,
     }
   ])
+
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    socket.on('message', (data) => {
+      console.log(`recieved data ${data}`);
+      const parsedData = JSON.parse(data.toString('utf8'))
+      dispatch(updateDonates(parsedData))
+    })
+    return () => {
+      socket.close();
+    }
+  }, [dispatch])
 
 
   return (
