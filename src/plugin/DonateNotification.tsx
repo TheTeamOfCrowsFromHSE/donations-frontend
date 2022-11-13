@@ -2,8 +2,8 @@ import React from "react";
 
 interface DonateNotificationProps {
   donatorName: string;
-  donatorMessage: string;
-  donatorSum: string;
+  donatorMessage: string | null;
+  donatorSum: string | null;
 }
 
 export const DonateNotification: React.FC<DonateNotificationProps> = ({ donatorName, donatorMessage, donatorSum }: DonateNotificationProps) => {

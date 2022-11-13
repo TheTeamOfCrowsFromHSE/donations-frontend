@@ -1,8 +1,10 @@
 export interface IDonate {
   id: number;
-  donatorName: string;
-  donatorMessage: string;
-  donatorSum: string; 
+  code: string;
+  amount: string | null;
+  idTransaction: string;
+  message: string | null;
+  name: string;
 }
 
 export interface IDonatesSlice { 

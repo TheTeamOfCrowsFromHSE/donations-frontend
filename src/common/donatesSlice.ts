@@ -12,7 +12,7 @@ export const donatesSlice = createSlice({
       console.log("PUSHING TO STORE DONATE");
       console.log(action.payload);
       
-     	const payload = JSON.parse(action.payload.payload); 
+      const payload = JSON.parse(action.payload.payload); 
       state.value.donates.push(...payload)
     },
     increaseLastCheckedDonateId : (state) => {

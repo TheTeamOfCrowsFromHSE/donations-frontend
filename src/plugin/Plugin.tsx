@@ -35,7 +35,7 @@ export const Plugin = () => {
   
 
   const [show, setShow] = useState(true);
-  let show2 = true;
+  // let show2 = true;
 
   // if (!currentDonate) {
   //   // setShow(false)
@@ -46,6 +46,14 @@ export const Plugin = () => {
     setTimeout(() => {
       // setShow(false);
       const nextId = getNextDonation(donates, currentDonationId)
+      console.log("NEXT ID");
+      console.log(nextId);
+      console.log("CURRENT ID");
+      console.log(currentDonationId);
+      
+      if (nextId === currentDonationId) {
+        setShow(false)
+      }
       setCurrentDonationId( nextId ? nextId : currentDonationId );
     }, DONATE_LIFE_TIME)
   }, [setShow, currentDonationId, donates])
@@ -59,7 +67,7 @@ export const Plugin = () => {
         <span className="font-extrabold text-white bg-[#ef3022] my-0 py-0">powered by</span>
         <img src={alphaLogo} className="my-0 py-0" alt="alphaLogo"/>
       </div>
-        { show2 && show && !!currentDonate && <DonateNotification donatorName={currentDonate.donatorName} donatorMessage={currentDonate.donatorMessage} donatorSum={currentDonate.donatorSum}  />}
+        { show && !!currentDonate && <DonateNotification donatorName={"Новый Донат!"} donatorMessage={currentDonate.message} donatorSum={currentDonate.amount == null ? "10 рублей" : currentDonate.amount + " рублей"}  />}
       
     </>
   )

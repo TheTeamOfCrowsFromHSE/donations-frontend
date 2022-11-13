@@ -25,27 +25,31 @@ export function getInitialDonates(): IDonatesSlice {
     lastCheckedDonateId: 1,
     donates: [
       {
-        id: 1,
-        donatorName: "Новый донат!",
-        donatorMessage: "Haha, loh",
-        donatorSum: "10 rub"
+        id: 0,
+        code: "106",
+        amount: null,
+        idTransaction: "",
+        message: null,
+        name: ""
       },
     ]
   };
 }
 
 export function useUpdateDonateFromServer() {
-  const { lastCheckedDonateId } = useAppSelector((state: RootState) => state.donates.value);
+  const { donates } = useAppSelector((state: RootState) => state.donates.value);
   const streamerId = useStreamerIdFromUrl();
   const dispatch = useAppDispatch()
+
+  const lastCheckedDonateId = getLastDonationId(donates)
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
       if (!Number.isNaN(streamerId))
-      fetch(BACKEND_ENDPOINT + '/donates/' + streamerId + '/' + lastCheckedDonateId)
-          .then(res => res.json())
-          .then(data => dispatch(updateDonates(data)))
-          .catch(e => console.error(e))
+        fetch(BACKEND_ENDPOINT + '/donates/' + streamerId + '/' + lastCheckedDonateId)
+            .then(res => res.json())
+            .then(data => dispatch(updateDonates(data)))
+            .catch(e => console.error(e))
 
     }, REQ_INTERVAL)
 
