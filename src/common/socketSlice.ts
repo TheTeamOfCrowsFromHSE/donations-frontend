@@ -4,7 +4,8 @@ const PORT = 8080
 const ENDPOINT = `localhost:${PORT}/plugin`
 
 export const socket = WebSocket(`ws://${ENDPOINT}`, {
-  reconnectionDelayMax: 10000
+  reconnectionDelayMax: 10000,
+  transports: ["websocket"]
 })
 
 socket.on('open', () => {
