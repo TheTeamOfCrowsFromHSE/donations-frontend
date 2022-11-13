@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useAppSelector, useStreamerIdFromUrl } from "src/common/hooks";
-import { socket } from "src/common/socketSlice";
+import { updateDonates } from "src/common/donatesSlice";
+import { useAppDispatch, useAppSelector, useStreamerIdFromUrl } from "src/common/hooks";
 import { RootState } from "src/common/store";
 import { IDonate, IDonatesSlice } from "src/types/donateType";
 
 const REQ_INTERVAL = 3000
+const BACKEND_ENDPOINT = "http://localhost:8080/api";
 
 export function getNewDonate(donates: IDonate[], lastCheckedDonateId : number): IDonate | null {
   console.log("NEW DONATE FROM THIS VARS = ");
@@ -34,19 +35,24 @@ export function getInitialDonates(): IDonatesSlice {
 }
 
 export function useUpdateDonateFromServer() {
-  const { donates } = useAppSelector((state: RootState) => state.donates.value)
+  const { lastCheckedDonateId } = useAppSelector((state: RootState) => state.donates.value);
   const streamerId = useStreamerIdFromUrl();
-  const lastId = getLastDonationId(donates);
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
-      socket.send({ lastId, streamerId })
-      console.log('is it send?');
+      if (!Number.isNaN(streamerId))
+      fetch(BACKEND_ENDPOINT + '/donates/' + streamerId + '/' + lastCheckedDonateId)
+          .then(res => res.json())
+          .then(data => dispatch(updateDonates(data)))
+          .catch(e => console.error(e))
+
     }, REQ_INTERVAL)
+
     return () => {
       clearInterval(intervalId)
     }
-  })
+  }, [streamerId, lastCheckedDonateId, dispatch])
 }
 
 export const getLastDonationId = (donates: IDonate[]) => {

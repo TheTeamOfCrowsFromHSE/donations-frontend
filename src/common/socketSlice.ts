@@ -8,11 +8,11 @@ export const socket = WebSocket(`ws://${ENDPOINT}`, {
   transports: ["websocket"]
 })
 
-socket.on('open', () => {
+socket.io.on('open', () => {
   console.log('[INFO] socket connected');
 })
 
-socket.on('close', () => {
+socket.io.on('close', () => {
   console.log("[INFO] socket closed");
 })
 
